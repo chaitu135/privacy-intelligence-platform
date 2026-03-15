@@ -160,12 +160,12 @@ function SecurityDashboard() {
       if (policyInputMode === 'file') {
         const formData = new FormData()
         formData.append('policyFile', policyFile)
-        response = await fetch('http://privacy-intelligence-platform.onrender.com/analyze-policy', {
+        response = await fetch('https://privacy-intelligence-platform.onrender.com/analyze-policy', {
           method: 'POST',
           body: formData,
         })
       } else {
-        response = await fetch('http://privacy-intelligence-platform.onrender.com/analyze-policy-url', {
+        response = await fetch('https://privacy-intelligence-platform.onrender.com/analyze-policy-url', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -205,7 +205,7 @@ function SecurityDashboard() {
     setShowSuccess(false)
 
     try {
-      const response = await fetch('http://privacy-intelligence-platform.onrender.com/analyze-app-link', {
+      const response = await fetch('https://privacy-intelligence-platform.onrender.com/analyze-app-link', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
