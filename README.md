@@ -199,24 +199,40 @@ Risk Levels
 61 – 100 → High Risk
 
 ---
+## 📸 Application Screenshots
 
-# Screenshots
+### APK Analysis Dashboard
+This screen shows the APK permission analysis interface where users upload APK files and view detected permissions and risk scores.
 
-(Add your UI screenshots inside the folder docs/screenshots)
+![APK Analysis](docs/apk%20analyser.png)
 
-Example files
+---
 
-docs/screenshots/dashboard.png
-docs/screenshots/apk-analysis.png
-docs/screenshots/policy-analysis.png
-docs/screenshots/app-store-analysis.png
+### Application Information
+Displays metadata extracted from the Android application including package details and other information.
 
-Example Markdown
+![Application Information](docs/app%20info.png)
 
-![Dashboard]
-![APK Analysis]
-![Policy Analysis]
+---
 
+### Analysis History
+Shows previously performed analysis results and history of analyzed applications.
+
+![History](docs/history.png)
+
+---
+
+### Privacy Policy Analysis Using URL
+Allows users to analyze privacy policies by providing the policy URL. The system extracts and evaluates privacy statements.
+
+![Policy URL Analysis](docs/policy%20with%20url.png)
+
+---
+
+### Privacy Policy Compliance Dashboard
+Displays privacy compliance analysis results and highlights red flags and green flags in the policy.
+
+![Policy Analysis](docs/policy.png)
 ---
 
 # Supported Analysis
