@@ -185,6 +185,8 @@ def allowed_file(filename, file_type='apk'):
     elif file_type == 'policy':
         return '.' in filename and filename.rsplit('.', 1)[1].lower() in ['pdf', 'txt', 'docx']
     return False
+app = Flask(__name__)
+
 @app.route("/")
 def home():
     return {
