@@ -170,7 +170,10 @@ def analyze_apk_basic(file_obj):
         }
 
 app = Flask(__name__)
-CORS(app)
+
+CORS(app, origins=[
+    "https://privacy-intelligenceplatform.vercel.app"
+])
 app = Flask(__name__)
 
 # Configuration
