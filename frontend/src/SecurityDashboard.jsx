@@ -3,6 +3,7 @@ import { jsPDF } from 'jspdf'
 import html2canvas from 'html2canvas'
 import './App.css'
 
+const API_BASE = "https://privacy-intelligence-platform.onrender.com";
 function SecurityDashboard() {
   const [activeModule, setActiveModule] = useState('apk')
   const [uploading, setUploading] = useState(false)
