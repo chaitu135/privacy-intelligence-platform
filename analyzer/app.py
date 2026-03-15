@@ -171,9 +171,15 @@ def analyze_apk_basic(file_obj):
 
 app = Flask(__name__)
 
-CORS(app, origins=[
-    "https://privacy-intelligenceplatform.vercel.app"
-])
+CORS(app)
+
+@app.route("/")
+def home():
+    return jsonify({
+        "message": "API is active",
+        "service": "Privacy Intelligence Analyzer",
+        "status": "running"
+    })
 app = Flask(__name__)
 
 # Configuration
