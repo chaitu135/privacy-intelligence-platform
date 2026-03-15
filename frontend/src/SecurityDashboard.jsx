@@ -115,7 +115,7 @@ function SecurityDashboard() {
     formData.append('apkFile', apkFile)
 
     try {
-      const response = await fetch('http://privacy-intelligence-platform.onrender.com/analyze', {
+      const response = await fetch('https://privacy-intelligence-platform.onrender.com/analyze', {
         method: 'POST',
         body: formData,
       })
