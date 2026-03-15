@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 from werkzeug.utils import secure_filename
+from flask_cors import CORS
 import os
 import sys
 import traceback
@@ -168,6 +169,8 @@ def analyze_apk_basic(file_obj):
             }
         }
 
+app = Flask(__name__)
+CORS(app)
 app = Flask(__name__)
 
 # Configuration
