@@ -78,10 +78,10 @@ function SecurityDashboard() {
   }
 
   const handleApkFile = (file) => {
-    const maxSize = 500 * 1024 * 1024
+    const maxSize = 1000 * 1024 * 1024
     
     if (file.size > maxSize) {
-      setError(`APK file size exceeds 500MB limit. Current size: ${(file.size / 1024 / 1024).toFixed(1)}MB`)
+      setError(`APK file size exceeds 1000MB limit. Current size: ${(file.size / 1024 / 1024).toFixed(1)}MB`)
       return
     }
     
