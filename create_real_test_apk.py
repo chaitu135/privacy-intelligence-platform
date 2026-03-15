@@ -1,0 +1,44 @@
+import zipfile
+import xml.etree.ElementTree as ET
+
+# Create a proper AndroidManifest.xml
+manifest_xml = '''<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" 
+    package="com.test.app" 
+    android:versionCode="1" 
+    android:versionName="1.0">
+    
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.WRITE_CONTACTS" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    
+    <application 
+        android:label="Test App" 
+        android:icon="@mipmap/ic_launcher"
+        android:theme="@style/AppTheme">
+        
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        
+    </application>
+    
+</manifest>'''
+
+# Create APK
+with zipfile.ZipFile('analyzer/real_test.apk', 'w') as apk:
+    apk.writestr('AndroidManifest.xml', manifest_xml)
+    apk.writestr('META-INF/MANIFEST.MF', 'Manifest-Version: 1.0\nCreated-By: Test\n')
+    apk.writestr('classes.dex', 'fake dex content')
+
+print("Real test APK created successfully")

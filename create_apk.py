@@ -1,0 +1,17 @@
+import zipfile
+import xml.etree.ElementTree as ET
+
+# Create a simple APK for testing
+with zipfile.ZipFile('test.apk', 'w') as apk:
+    apk.writestr('AndroidManifest.xml', '''<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.test.app" android:versionCode="1" android:versionName="1.0">
+    <application android:label="Test App" android:icon="@mipmap/ic_launcher">
+        <uses-permission android:name="android.permission.INTERNET" />
+        <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+        <uses-permission android:name="android.permission.CAMERA" />
+        <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+        <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+        <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    </application>
+</manifest>''')
+print("Test APK created successfully")

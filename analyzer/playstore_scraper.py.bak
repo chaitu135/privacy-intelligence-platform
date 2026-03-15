@@ -1,0 +1,348 @@
+import requests
+import re
+from bs4 import BeautifulSoup
+from urllib.parse import urlparse, parse_qs
+import json
+
+class PlayStoreScraper:
+    def __init__(self):
+        self.base_url = "https://play.google.com/store/apps/details"
+        self.headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+            'Accept-Language': 'en-US,en;q=0.9',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
+        }
+
+    def extract_app_id(self, url: str) -> str:
+        """Extract app ID from Play Store URL"""
+        # Handle different URL formats
+        patterns = [
+            r'id=([a-zA-Z0-9._]+)',
+            r'/store/apps/details/([a-zA-Z0-9._]+)',
+            r'play\.google\.com.*?([a-zA-Z0-9._]+)$'
+        ]
+        
+        for pattern in patterns:
+            match = re.search(pattern, url)
+            if match:
+                return match.group(1)
+        
+        # If no patterns match, assume the URL itself is the app ID
+        return url
+
+    def scrape_by_package(self, package_name: str) -> dict:
+        """Scrape app data using package name directly"""
+        try:
+            url = f"{self.base_url}?id={package_name}"
+            response = requests.get(url, headers=self.headers, timeout=10)
+            
+            if response.status_code != 200:
+                return None
+                
+            return self._parse_app_page(response.text)
+            
+        except Exception as e:
+            print(f"Error scraping by package: {e}")
+            return None
+
+    def scrape_app(self, url: str) -> dict:
+        """Scrape app data using full URL"""
+        try:
+            response = requests.get(url, headers=self.headers, timeout=10)
+            
+            if response.status_code != 200:
+                return None
+                
+            return self._parse_app_page(response.text)
+            
+        except Exception as e:
+            print(f"Error scraping app: {e}")
+            return None
+
+    def scrape_app_metadata(self, url: str) -> dict:
+        """Scrape app metadata from Play Store URL"""
+        try:
+            app_id = self.extract_app_id(url)
+            if not app_id:
+                return {
+                    'error': 'Invalid Play Store URL. Could not extract app ID.',
+                    'app_id': None
+                }
+
+            # Construct the proper URL
+            if 'id=' not in url:
+                url = f"{self.base_url}?id={app_id}"
+            
+            response = requests.get(url, headers=self.headers, timeout=10)
+            response.raise_for_status()
+            
+            soup = BeautifulSoup(response.text, 'html.parser')
+            
+            # Extract metadata using multiple selectors
+            metadata = {
+                'app_id': app_id,
+                'app_name': self._extract_app_name(soup),
+                'developer': self._extract_developer(soup),
+                'category': self._extract_category(soup),
+                'rating': self._extract_rating(soup),
+                'reviews': self._extract_reviews(soup),
+                'installs': self._extract_installs(soup),
+                'size': self._extract_size(soup),
+                'privacy_policy_url': self._extract_privacy_policy_url(soup),
+                'description': self._extract_description(soup),
+                'permissions': self._extract_permissions(soup),
+                'screenshots': self._extract_screenshots(soup),
+                'last_updated': self._extract_last_updated(soup),
+                'content_rating': self._extract_content_rating(soup)
+            }
+            
+            return metadata
+            
+        except requests.RequestException as e:
+            return {
+                'error': f'Failed to fetch app data: {str(e)}',
+                'app_id': app_id if 'app_id' in locals() else None
+            }
+        except Exception as e:
+            return {
+                'error': f'Unexpected error: {str(e)}',
+                'app_id': app_id if 'app_id' in locals() else None
+            }
+
+    def _extract_app_name(self, soup) -> str:
+        """Extract app name"""
+        selectors = [
+            'h1[itemprop="name"] span',
+            '.document-title',
+            'h1',
+            '[data-g-id="title"]'
+        ]
+        
+        for selector in selectors:
+            element = soup.select_one(selector)
+            if element:
+                return element.get_text().strip()
+        
+        return 'Unknown App'
+
+    def _extract_developer(self, soup) -> str:
+        """Extract developer name"""
+        selectors = [
+            '[itemprop="author"] span',
+            '.document-subtitle',
+            '.document-subtitle-primary',
+            '[data-g-id="developer"]'
+        ]
+        
+        for selector in selectors:
+            element = soup.select_one(selector)
+            if element:
+                return element.get_text().strip()
+        
+        return 'Unknown Developer'
+
+    def _extract_category(self, soup) -> str:
+        """Extract app category"""
+        selectors = [
+            '[itemprop="genre"]',
+            '.document-subtitle-category',
+            '.category'
+        ]
+        
+        for selector in selectors:
+            element = soup.select_one(selector)
+            if element:
+                return element.get_text().strip()
+        
+        return 'Unknown'
+
+    def _extract_rating(self, soup) -> str:
+        """Extract app rating"""
+        selectors = [
+            '[itemprop="ratingValue"]',
+            '.BHMmbe',
+            '.score'
+        ]
+        
+        for selector in selectors:
+            element = soup.select_one(selector)
+            if element:
+                return element.get_text().strip()
+        
+        return '0.0'
+
+    def _extract_reviews(self, soup) -> str:
+        """Extract number of reviews"""
+        selectors = [
+            '[itemprop="ratingCount"]',
+            '.EymY4b span',
+            '.reviews-number'
+        ]
+        
+        for selector in selectors:
+            element = soup.select_one(selector)
+            if element:
+                return element.get_text().strip()
+        
+        return '0'
+
+    def _extract_installs(self, soup) -> str:
+        """Extract number of installs"""
+        selectors = [
+            '[itemprop="numDownloads"]',
+            '.Cl1Eob',
+            '.installs'
+        ]
+        
+        for selector in selectors:
+            element = soup.select_one(selector)
+            if element:
+                return element.get_text().strip()
+        
+        return '0+'
+
+    def _extract_size(self, soup) -> str:
+        """Extract app size"""
+        selectors = [
+            '.Cl1Eob span',
+            '.size',
+            '[data-g-id="size"]'
+        ]
+        
+        for selector in selectors:
+            element = soup.select_one(selector)
+            if element:
+                text = element.get_text().strip()
+                # Filter out size info
+                if any(unit in text.lower() for unit in ['mb', 'gb', 'kb']):
+                    return text
+        
+        return 'Unknown'
+
+    def _extract_privacy_policy_url(self, soup) -> str:
+        """Extract privacy policy URL"""
+        # Look for privacy policy links
+        privacy_links = soup.find_all('a', href=True, string=re.compile(r'privacy', re.IGNORECASE))
+        
+        for link in privacy_links:
+            href = link['href']
+            if href.startswith('http'):
+                return href
+        
+        # Alternative: look in script data
+        scripts = soup.find_all('script')
+        for script in scripts:
+            if script.string and 'privacyPolicyUrl' in script.string:
+                match = re.search(r'privacyPolicyUrl["\s]*:["\s]*([^"\s,}]+)', script.string)
+                if match:
+                    return match.group(1)
+        
+        return None
+
+    def _extract_description(self, soup) -> str:
+        """Extract app description"""
+        selectors = [
+            '[itemprop="description"] div span',
+            '.DWPxHb',
+            '.description-content',
+            '.app-description'
+        ]
+        
+        for selector in selectors:
+            element = soup.select_one(selector)
+            if element:
+                return element.get_text().strip()[:500]  # Limit length
+        
+        return 'No description available'
+
+    def _extract_permissions(self, soup) -> list:
+        """Extract app permissions"""
+        permissions = []
+        
+        # Look for permission sections
+        permission_elements = soup.find_all(['div', 'span'], class_=re.compile(r'permission', re.IGNORECASE))
+        
+        for element in permission_elements:
+            text = element.get_text().strip()
+            if text and len(text) > 3:
+                permissions.append(text)
+        
+        return permissions[:10]  # Limit to first 10 permissions
+
+    def _extract_screenshots(self, soup) -> list:
+        """Extract app screenshots"""
+        screenshots = []
+        
+        img_elements = soup.find_all('img', src=True)
+        for img in img_elements:
+            src = img['src']
+            if 'screenshot' in src.lower() or 'cover' in src.lower():
+                screenshots.append(src)
+        
+        return screenshots[:5]  # Limit to first 5 screenshots
+
+    def _extract_last_updated(self, soup) -> str:
+        """Extract last updated date"""
+        selectors = [
+            '.document-subtitle',
+            '.updated',
+            '[data-g-id="updated"]'
+        ]
+        
+        for selector in selectors:
+            element = soup.select_one(selector)
+            if element:
+                text = element.get_text().strip()
+                if 'updated' in text.lower():
+                    return text
+        
+        return 'Unknown'
+
+    def _extract_content_rating(self, soup) -> str:
+        """Extract content rating"""
+        selectors = [
+            '.document-subtitle-content-rating',
+            '.content-rating',
+            '[itemprop="contentRating"]'
+        ]
+        
+        for selector in selectors:
+            element = soup.select_one(selector)
+            if element:
+                return element.get_text().strip()
+        
+        return 'Unknown'
+
+    def validate_url(self, url: str) -> bool:
+        """Validate if URL is a Play Store URL"""
+        return 'play.google.com' in url.lower() and '/store/apps/details' in url.lower()
+
+    def _parse_app_page(self, html_content: str) -> dict:
+        """Parse HTML content and extract app metadata"""
+        try:
+            soup = BeautifulSoup(html_content, 'html.parser')
+            
+            # Extract basic metadata
+            metadata = {
+                'app_name': self._extract_app_name(soup),
+                'developer': self._extract_developer(soup),
+                'category': self._extract_category(soup),
+                'rating': self._extract_rating(soup),
+                'reviews': self._extract_reviews(soup),
+                'installs': self._extract_installs(soup),
+                'size': self._extract_size(soup),
+                'privacy_policy_url': self._extract_privacy_policy_url(soup),
+                'description': self._extract_description(soup),
+                'permissions': self._extract_permissions(soup),
+                'screenshots': self._extract_screenshots(soup),
+                'last_updated': self._extract_last_updated(soup),
+                'content_rating': self._extract_content_rating(soup)
+            }
+            
+            return metadata
+            
+        except Exception as e:
+            print(f"Error parsing app page: {e}")
+            return {
+                'error': f'Failed to parse app page: {str(e)}'
+            }
