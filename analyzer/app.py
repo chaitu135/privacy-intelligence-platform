@@ -1,10 +1,3 @@
-@app.route("/")
-def home():
-    return {
-        "service": "Privacy Intelligence Analyzer",
-        "status": "running",
-        "message": "API is active"
-    }
 from flask import Flask, request, jsonify
 from werkzeug.utils import secure_filename
 import os
@@ -192,6 +185,13 @@ def allowed_file(filename, file_type='apk'):
     elif file_type == 'policy':
         return '.' in filename and filename.rsplit('.', 1)[1].lower() in ['pdf', 'txt', 'docx']
     return False
+@app.route("/")
+def home():
+    return {
+        "service": "Privacy Intelligence Analyzer",
+        "status": "running",
+        "message": "API is active"
+    }
 
 @app.route('/analyze', methods=['POST'])
 def analyze_apk():
