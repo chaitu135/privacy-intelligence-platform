@@ -71,7 +71,7 @@ function ProfessionalDashboard() {
     formData.append('apkFile', apkFile)
 
     try {
-      const response = await fetch('http://localhost:3001/api/upload-apk', {
+      const response = await fetch('https://privacy-intelligence-platform.onrender.com/analyze', {
         method: 'POST',
         body: formData,
       })
@@ -110,12 +110,12 @@ function ProfessionalDashboard() {
       if (policyInputMode === 'file') {
         const formData = new FormData()
         formData.append('policyFile', policyFile)
-        response = await fetch('http://localhost:3001/api/analyze-policy', {
+        response = await fetch('https://privacy-intelligence-platform.onrender.com/analyze-policy', {
           method: 'POST',
           body: formData,
         })
       } else {
-        response = await fetch('http://localhost:3001/api/analyze-policy-url', {
+        response = await fetch('https://privacy-intelligence-platform.onrender.com/analyze-policy-url', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -149,7 +149,7 @@ function ProfessionalDashboard() {
     setUploading(true)
 
     try {
-      const response = await fetch('http://localhost:3001/api/analyze-app-link', {
+      const response = await fetch('https://privacy-intelligence-platform.onrender.com/analyze-app-link', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
