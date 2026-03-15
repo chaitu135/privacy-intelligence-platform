@@ -213,9 +213,9 @@ docs/screenshots/app-store-analysis.png
 
 Example Markdown
 
-![Dashboard](docs/screenshots/dashboard.png)
-![APK Analysis](docs/screenshots/apk-analysis.png)
-![Policy Analysis](docs/screenshots/policy-analysis.png)
+![Dashboard]
+![APK Analysis]
+![Policy Analysis]
 
 ---
 
