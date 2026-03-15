@@ -1,3 +1,10 @@
+@app.route("/")
+def home():
+    return {
+        "service": "Privacy Intelligence Analyzer",
+        "status": "running",
+        "message": "API is active"
+    }
 from flask import Flask, request, jsonify
 from werkzeug.utils import secure_filename
 import os
