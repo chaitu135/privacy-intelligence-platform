@@ -1,250 +1,289 @@
-# Privacy Intelligence System
+# Privacy Intelligence Platform
 
-A web-based system for analyzing Android APK files to extract permissions and assess privacy risks. Built with React, Node.js, and Python with Androguard for APK analysis.
+Privacy Intelligence Platform is an automated system designed to analyze Android applications and privacy policies to detect potential privacy and security risks.
 
-## 🏗️ Architecture
+The platform performs APK permission analysis, privacy policy NLP analysis, and app store metadata extraction to generate comprehensive privacy risk assessment reports.
 
-```
-User (React SPA) ↔ Node.js/Express API ↔ Python Flask Analyzer
-```
+This system helps users understand how mobile applications access sensitive data and evaluate their privacy implications before installation.
 
-- **Frontend**: React + TailwindCSS (single-page application)
-- **Backend**: Node.js + Express (file upload and orchestration)
-- **Analysis Service**: Python Flask + Androguard (APK manifest extraction)
+---
 
-## 🚀 Quick Start
+# Project Motivation
 
-### Prerequisites
+Mobile applications often request sensitive permissions such as location, contacts, camera, and storage. Many users install applications without understanding the potential privacy implications.
 
-- Node.js (v16 or higher)
-- Python 3.8 or higher
-- npm/yarn
-- pip
+Privacy Intelligence Platform was developed to provide automated analysis of Android applications and privacy policies, enabling users to better understand the risks associated with mobile applications.
 
-### Installation
+The system combines security analysis, policy intelligence, and risk scoring to present clear insights about application behavior.
 
-1. **Clone the repository**
-   ```bash
-   git clone <repository-url>
-   cd privacy-intel
-   ```
+---
 
-2. **Setup Python Analyzer**
-   ```bash
-   cd analyzer
-   python -m venv venv
-   
-   # Windows
-   venv\Scripts\activate
-   
-   # Mac/Linux
-   source venv/bin/activate
-   
-   pip install -r requirements.txt
-   ```
+# Key Features
 
-3. **Setup Node.js Backend**
-   ```bash
-   cd ../server
-   npm install
-   ```
+* Android APK permission analysis
+* Privacy policy compliance analysis using NLP
+* App store metadata intelligence
+* Automated privacy risk scoring
+* Security report generation
+* Visual dashboard for risk insights
+* Downloadable analysis reports
+* Responsive web interface
 
-4. **Setup React Frontend**
-   ```bash
-   cd ../frontend
-   npm install
-   ```
+---
 
-### Running the Application
+# System Architecture
 
-1. **Start the Python Analyzer Service**
-   ```bash
-   cd analyzer
-   python app.py
-   ```
-   The service will start on `http://localhost:5000`
+User
+↓
+React Frontend (Dashboard Interface)
+↓
+Node.js Backend API
+↓
+Python Analysis Engine
 
-2. **Start the Node.js Backend**
-   ```bash
-   cd server
-   npm start
-   ```
-   The API will start on `http://localhost:3001`
+* APK Permission Analyzer
+* Privacy Policy NLP Analyzer
+* App Store Metadata Scraper
+  ↓
+  Risk Scoring Engine
+  ↓
+  Privacy Intelligence Report
 
-3. **Start the React Frontend**
-   ```bash
-   cd frontend
-   npm run dev
-   ```
-   The application will open on `http://localhost:5173`
+---
 
-## 📁 Project Structure
+# System Workflow
 
-```
-privacy-intel/
-├── frontend/                 # React + TailwindCSS SPA
-│   ├── src/
-│   │   ├── App.jsx          # Main application component
-│   │   └── index.css        # Tailwind styles
-│   ├── package.json
-│   └── tailwind.config.js
-├── server/                   # Node.js + Express API
-│   ├── src/
-│   │   └── index.js         # Main server file
-│   └── package.json
-├── analyzer/                 # Python Flask analyzer
-│   ├── app.py               # Flask application
-│   ├── requirements.txt     # Python dependencies
-│   └── utils/
-│       └── andro_extract.py # APK analysis logic
-└── README.md
-```
+1. User uploads an APK file or provides an application store URL.
+2. The frontend sends the request to the backend API.
+3. The backend processes the request and forwards it to the analysis engine.
+4. The Python analyzer extracts APK permissions and metadata.
+5. Privacy policy text is analyzed using NLP techniques.
+6. Risk scoring engine evaluates security and privacy risks.
+7. Results are displayed through an interactive dashboard.
+8. Users can download a structured analysis report.
 
-## 🔧 API Endpoints
+---
 
-### Node.js Backend
+# Tech Stack
 
-- `POST /api/upload-apk` - Upload and analyze APK file
-- `GET /api/health` - Health check endpoint
+Frontend
 
-### Python Analyzer
+* React.js
+* Tailwind CSS
+* Vite
 
-- `POST /analyze` - Analyze APK file and return permissions
-- `GET /health` - Health check endpoint
+Backend
 
-## 📊 Risk Scoring
+* Node.js
+* Express.js
 
-The system calculates privacy risk scores based on permission types:
+Analysis Engine
 
-- **Normal permissions**: 0 points
-- **Dangerous permissions**: 10 points each
-- **Special permissions**: 15 points each
+* Python
+* Flask
+* Androguard
+* Natural Language Processing
 
-**Risk Levels:**
-- **0-30**: Low Risk (Green)
-- **31-60**: Medium Risk (Yellow)
-- **61-100**: High Risk (Red)
+Tools
 
-## 🎯 Features
+* Git
+* GitHub
+* REST APIs
 
-- **Drag & Drop Upload**: Intuitive file upload interface
-- **Real-time Analysis**: Instant permission extraction and risk assessment
-- **Permission Classification**: Categorizes permissions into Normal/Dangerous/Special
-- **Risk Visualization**: Circular gauge showing risk score
-- **Download Reports**: Export analysis results as JSON
-- **Responsive Design**: Works on desktop and mobile devices
+---
 
-## 📱 Supported Analysis
+# Project Structure
 
-- **App Information**: Name, package, version details
-- **Permission Extraction**: All permissions from AndroidManifest.xml
-- **SDK Information**: Min and target SDK versions
-- **Risk Assessment**: Automated privacy risk scoring
+privacy-intelligence-platform
 
-## 🔒 Permission Categories
+frontend                React web interface
+server                  Node.js backend API
+analyzer                Python APK and policy analysis engine
+docs                    UML diagrams and documentation
+uploads                 Temporary uploaded files
+reports                 Generated analysis reports
 
-### Normal Permissions
-Low-risk permissions like internet access, network state, vibration, etc.
+---
 
-### Dangerous Permissions
-Medium-risk permissions that require user consent:
-- Location (fine/coarse)
-- Contacts (read/write)
-- Storage (read/write)
-- Camera, microphone
-- Phone, SMS
+# Installation Guide
 
-### Special Permissions
-High-risk permissions requiring additional oversight:
-- System alert window
-- Device administrator
-- Accessibility service
-- Usage access
-- Install unknown apps
+Prerequisites
 
-## 🚀 Deployment
+* Node.js (v16 or higher)
+* Python 3.8+
+* npm or yarn
+* pip
 
-### Frontend (Vercel/Netlify)
-```bash
-cd frontend
-npm run build
-# Deploy dist/ folder to Vercel or Netlify
-```
+---
 
-### Backend (Render/Heroku/Railway)
-```bash
-cd server
-# Deploy to your preferred platform
-# Set PYTHON_SERVICE_URL environment variable
-```
+# Setup Python Analyzer
 
-### Python Service (Render/Heroku)
-```bash
 cd analyzer
-# Deploy to your preferred platform
-# Ensure Androguard is available in the deployment environment
-```
+python -m venv venv
 
-## 🧪 Testing
+Activate environment
 
-### Test with Sample APKs
-1. Download sample APK files
-2. Upload through the web interface
-3. Verify permission extraction and risk scoring
+Windows
 
-### API Testing
-```bash
-# Health check
+venv\Scripts\activate
+
+Linux / Mac
+
+source venv/bin/activate
+
+Install dependencies
+
+pip install -r requirements.txt
+
+---
+
+# Setup Node.js Backend
+
+cd server
+npm install
+
+---
+
+# Setup React Frontend
+
+cd frontend
+npm install
+
+---
+
+# Running the Application
+
+Start Python Analyzer
+
+cd analyzer
+python app.py
+
+Runs on
+http://localhost:5000
+
+Start Backend
+
+cd server
+npm start
+
+Runs on
+http://localhost:3001
+
+Start Frontend
+
+cd frontend
+npm run dev
+
+Runs on
+http://localhost:5173
+
+---
+
+# Risk Scoring System
+
+The system calculates privacy risk scores based on permission categories.
+
+Normal Permissions
+Low risk permissions such as network access and vibration.
+
+Dangerous Permissions
+Permissions requiring user approval such as location, contacts, storage, camera, and microphone.
+
+Special Permissions
+High risk permissions requiring additional authorization such as system overlay and usage access.
+
+Risk Levels
+
+0 – 30   → Low Risk
+31 – 60  → Medium Risk
+61 – 100 → High Risk
+
+---
+
+# Screenshots
+
+(Add your UI screenshots inside the folder docs/screenshots)
+
+Example files
+
+docs/screenshots/dashboard.png
+docs/screenshots/apk-analysis.png
+docs/screenshots/policy-analysis.png
+docs/screenshots/app-store-analysis.png
+
+Example Markdown
+
+![Dashboard](docs/screenshots/dashboard.png)
+![APK Analysis](docs/screenshots/apk-analysis.png)
+![Policy Analysis](docs/screenshots/policy-analysis.png)
+
+---
+
+# Supported Analysis
+
+The platform supports analysis of the following information
+
+* Android application metadata
+* Permission extraction from AndroidManifest.xml
+* Privacy policy statements
+* App store metadata
+* Privacy risk scoring
+
+---
+
+# Testing
+
+Health Check
+
 curl http://localhost:3001/api/health
 
-# Upload APK (replace with actual file)
+Upload APK Test
+
 curl -X POST -F "apkFile=@sample.apk" http://localhost:3001/api/upload-apk
-```
 
-## 🐛 Troubleshooting
+---
 
-### Common Issues
+# Deployment
 
-1. **Python Service Connection Error**
-   - Ensure the Python analyzer is running on port 5000
-   - Check firewall settings
+Frontend can be deployed using
 
-2. **Androguard Installation Issues**
-   ```bash
-   pip install --upgrade androguard
-   # If issues persist, try:
-   pip install androguard==3.3.5
-   ```
+* Vercel
+* Netlify
 
-3. **File Upload Errors**
-   - Check file size limit (50MB max)
-   - Ensure file is a valid APK
+Backend can be deployed using
 
-4. **CORS Issues**
-   - The backend includes CORS middleware
-   - For production, update allowed origins
+* Render
+* Railway
+* Heroku
 
-## 📈 Future Enhancements
+Python analysis engine can be deployed on
 
-- **Machine Learning**: Advanced privacy risk models
-- **Policy Analysis**: Privacy policy extraction and analysis
-- **Historical Data**: Store and compare analysis results
-- **Batch Processing**: Analyze multiple APKs simultaneously
-- **API Rate Limiting**: Prevent abuse
-- **User Authentication**: Secure access control
+* Render
+* Railway
+* Docker container
 
-## 📄 License
+---
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+# Future Improvements
 
-## 🤝 Contributing
+* Machine learning based risk prediction
+* Dynamic runtime malware detection
+* Multi-store application analysis
+* Developer reputation scoring
+* Batch APK analysis
+* User authentication and dashboards
 
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a Pull Request
+---
 
-## 📞 Support
+# Author
 
-For support and questions, please open an issue in the repository.
+RAVULA.CHAITANYA SIVA KRISHNA
+B.Tech Computer Science Engineering
+
+---
+
+# Contact
+
+Email
+[rchaitanyasivakrishna@gmail.com](mailto:rchaitanyasivakrishna@gmail.com)
+
