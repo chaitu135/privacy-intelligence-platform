@@ -170,7 +170,6 @@ def analyze_apk_basic(file_obj):
         }
 
 app = Flask(__name__)
-
 CORS(app)
 
 @app.route("/")
@@ -180,7 +179,6 @@ def home():
         "service": "Privacy Intelligence Analyzer",
         "status": "running"
     })
-app = Flask(__name__)
 
 # Configuration
 app.config['MAX_CONTENT_LENGTH'] = 2 * 1024 * 1024 * 1024  # 2GB max file size (increased from 500MB)
@@ -197,15 +195,7 @@ def allowed_file(filename, file_type='apk'):
     elif file_type == 'policy':
         return '.' in filename and filename.rsplit('.', 1)[1].lower() in ['pdf', 'txt', 'docx']
     return False
-app = Flask(__name__)
 
-@app.route("/")
-def home():
-    return {
-        "service": "Privacy Intelligence Analyzer",
-        "status": "running",
-        "message": "API is active"
-    }
 
 @app.route('/analyze', methods=['POST'])
 def analyze_apk():
