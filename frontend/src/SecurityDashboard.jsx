@@ -81,7 +81,7 @@ function SecurityDashboard() {
     const maxSize = 1000 * 1024 * 1024
     
     if (file.size > maxSize) {
-      setError(`APK file size exceeds 1000MB limit. Current size: ${(file.size / 1024 / 1024).toFixed(1)}MB`)
+      setError(`APK file size exceeds 500MB limit. Current size: ${(file.size / 1024 / 1024).toFixed(1)}MB`)
       return
     }
     
@@ -115,7 +115,7 @@ function SecurityDashboard() {
     formData.append('apkFile', apkFile)
 
     try {
-      const response = await fetch('https://privacy-intelligence-platform.onrender.com/api/upload-apk', {
+      const response = await fetch('https://privacy-intelligence-platform.onrender.com/analyze', {
         method: 'POST',
         body: formData,
       })
@@ -160,12 +160,12 @@ function SecurityDashboard() {
       if (policyInputMode === 'file') {
         const formData = new FormData()
         formData.append('policyFile', policyFile)
-        response = await fetch('https://privacy-intelligence-platform.onrender.com/api/analyze-policy', {
+        response = await fetch('https://privacy-intelligence-platform.onrender.com/analyze-policy', {
           method: 'POST',
           body: formData,
         })
       } else {
-        response = await fetch('https://privacy-intelligence-platform.onrender.com/api/analyze-policy-url', {
+        response = await fetch('https://privacy-intelligence-platform.onrender.com/analyze-policy-url', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -205,7 +205,7 @@ function SecurityDashboard() {
     setShowSuccess(false)
 
     try {
-      const response = await fetch('https://privacy-intelligence-platform.onrender.com/api/analyze-app-link', {
+      const response = await fetch('https://privacy-intelligence-platform.onrender.com/analyze-app-link', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
