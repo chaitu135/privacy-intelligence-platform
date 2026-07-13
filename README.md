@@ -263,14 +263,11 @@ curl -X POST -F "apkFile=@sample.apk" http://localhost:3001/api/upload-apk
 
 Frontend can be deployed using
 
-* Vercel
-* Netlify
+* Vercel-----https://privacy-intelligence-platformm.vercel.app
 
 Backend can be deployed using
 
-* Render
-* Railway
-* Heroku
+* Render-----https://api.render.com/deploy/srv-d6raaf1aae7s739st1b0?key=2kZp9saQisw
 
 Python analysis engine can be deployed on
 
